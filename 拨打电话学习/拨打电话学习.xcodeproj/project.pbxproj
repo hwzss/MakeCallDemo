@@ -439,7 +439,7 @@
 				INFOPLIST_FILE = "拨打电话学习/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.qwkj.EstateService.------";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.qwkj.CallDemo.------";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -452,7 +452,7 @@
 				INFOPLIST_FILE = "拨打电话学习/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.qwkj.EstateService.------";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.qwkj.CallDemo.------";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
