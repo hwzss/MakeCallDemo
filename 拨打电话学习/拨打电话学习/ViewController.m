@@ -24,7 +24,7 @@
 - (IBAction)makeCallAction:(id)sender {
     
 
-    [@"tel:18770002135" WZ_makeCall:^(BOOL success) {
+    [@"tel:187XXXX2135" WZ_makeCall:^(BOOL success) {
         
     }];
     
