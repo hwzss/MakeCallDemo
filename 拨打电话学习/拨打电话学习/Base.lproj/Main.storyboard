@@ -22,27 +22,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rRm-a9-WHt">
-                                <rect key="frame" x="75" y="110" width="92" height="30"/>
+                                <rect key="frame" x="113" y="212" width="114" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="webView电话"/>
+                                <state key="normal" title="拨打电话"/>
                                 <connections>
-                                    <action selector="webViewAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Sh-qa-DM2"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jyi-CF-bMC">
-                                <rect key="frame" x="68" y="168" width="106" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="application电话"/>
-                                <connections>
-                                    <action selector="applicationAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nkb-Km-gmx"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sLa-RQ-Hbs">
-                                <rect key="frame" x="43" y="231" width="157" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="ios10application版电话"/>
-                                <connections>
-                                    <action selector="applicationcompletionAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vpw-Fj-3Pc"/>
+                                    <action selector="makeCallAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BD6-yY-k9Z"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -51,7 +35,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10" y="113"/>
+            <point key="canvasLocation" x="8.8000000000000007" y="112.89355322338831"/>
         </scene>
     </scenes>
 </document>

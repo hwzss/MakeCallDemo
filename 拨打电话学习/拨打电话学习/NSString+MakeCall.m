@@ -24,10 +24,15 @@
 }
 
 -(void)WZ_makeCall:(WZ_MakeCallBlock )block{
-    if([[[UIDevice currentDevice] systemVersion] floatValue]>=9.0){
-        [self WZ_makeCallUseOpenUrl:block];
+    if (![self hasPrefix:@"tel:"]) {
+        [[NSString stringWithFormat:@"tel:%@",self] WZ_makeCall:block];
     }else{
-        [self WZ_makeCallUseWebView:block];
+        if([[[UIDevice currentDevice] systemVersion] floatValue]>=9.0){
+            [self WZ_makeCallUseOpenUrl:block];
+        }else{
+            [self WZ_makeCallUseWebView:block];
+        }
+
     }
     
 }
@@ -105,6 +110,7 @@
 -(void)applicationWillResignActive{
     if (self.didBecomeActive) {
         if (self.makeCallBlock) {
+            //移除通知以及webView，执行回调
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
             
@@ -116,6 +122,7 @@
     }
 }
 -(void)applicationDidBecomeActive{
+    //调用该方法后，再调用applicationWillResignActive就是开始通话了，所以这里记录调用了该方法
     self.didBecomeActive = YES;
 }
 
