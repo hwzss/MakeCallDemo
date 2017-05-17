@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7E6582261ECAD83F0029ADB6 /* NSString+MakeCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6582251ECAD83F0029ADB6 /* NSString+MakeCall.m */; };
+		7E65822E1ECCF0AA0029ADB6 /* UIAlertView+XH.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E65822C1ECCF0AA0029ADB6 /* UIAlertView+XH.m */; };
 		7E7EB42A1EC9B10300B3F6D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E7EB4291EC9B10300B3F6D6 /* main.m */; };
 		7E7EB42D1EC9B10300B3F6D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E7EB42C1EC9B10300B3F6D6 /* AppDelegate.m */; };
 		7E7EB4301EC9B10300B3F6D6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E7EB42F1EC9B10300B3F6D6 /* ViewController.m */; };
@@ -38,6 +39,8 @@
 /* Begin PBXFileReference section */
 		7E6582241ECAD83F0029ADB6 /* NSString+MakeCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MakeCall.h"; sourceTree = "<group>"; };
 		7E6582251ECAD83F0029ADB6 /* NSString+MakeCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MakeCall.m"; sourceTree = "<group>"; };
+		7E65822C1ECCF0AA0029ADB6 /* UIAlertView+XH.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+XH.m"; sourceTree = "<group>"; };
+		7E65822D1ECCF0AA0029ADB6 /* UIAlertView+XH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+XH.h"; sourceTree = "<group>"; };
 		7E7EB4251EC9B10300B3F6D6 /* 拨打电话学习.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "拨打电话学习.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E7EB4291EC9B10300B3F6D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7E7EB42B1EC9B10300B3F6D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -110,6 +113,8 @@
 				7E7EB42F1EC9B10300B3F6D6 /* ViewController.m */,
 				7E6582241ECAD83F0029ADB6 /* NSString+MakeCall.h */,
 				7E6582251ECAD83F0029ADB6 /* NSString+MakeCall.m */,
+				7E65822D1ECCF0AA0029ADB6 /* UIAlertView+XH.h */,
+				7E65822C1ECCF0AA0029ADB6 /* UIAlertView+XH.m */,
 				7E7EB4311EC9B10300B3F6D6 /* Main.storyboard */,
 				7E7EB4341EC9B10300B3F6D6 /* Assets.xcassets */,
 				7E7EB4361EC9B10300B3F6D6 /* LaunchScreen.storyboard */,
@@ -282,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E7EB4301EC9B10300B3F6D6 /* ViewController.m in Sources */,
+				7E65822E1ECCF0AA0029ADB6 /* UIAlertView+XH.m in Sources */,
 				7E7EB42D1EC9B10300B3F6D6 /* AppDelegate.m in Sources */,
 				7E7EB42A1EC9B10300B3F6D6 /* main.m in Sources */,
 				7E6582261ECAD83F0029ADB6 /* NSString+MakeCall.m in Sources */,

@@ -7,7 +7,7 @@
 //
 
 #import "NSString+MakeCall.h"
-
+#import "UIAlertView+XH.h"
 #import <objc/runtime.h>
 
 @interface NSString ()
@@ -27,9 +27,28 @@
     if (![self hasPrefix:@"tel:"]) {
         [[NSString stringWithFormat:@"tel:%@",self] WZ_makeCall:block];
     }else{
-        if([[[UIDevice currentDevice] systemVersion] floatValue]>=9.0){
-            [self WZ_makeCallUseOpenUrl:block];
-        }else{
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0)
+        {
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.2) {
+                //在10.2以下是不会弹出提示框的
+                UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:[self stringByReplacingOccurrencesOfString:@"tel:" withString:@""] delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"呼叫", nil];
+                [alertV XH_ShowWithCallBack:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                    if (buttonIndex == 0) {
+                        if (block) {
+                            block(NO);
+                        }
+                    }else if (buttonIndex == 1){
+                        [self WZ_makeCallUseOpenUrl:block];
+                    }
+                }];
+            }else{
+                //10.2以上会弹出提示框，所以10.2以上不需要弹出框
+                [self WZ_makeCallUseOpenUrl:block];
+            }
+            
+        }
+        else
+        {
             [self WZ_makeCallUseWebView:block];
         }
 
