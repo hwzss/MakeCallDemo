@@ -7,8 +7,26 @@
 //
 
 #import "NSString+MakeCall.h"
-#import "UIAlertView+XH.h"
 #import <objc/runtime.h>
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+typedef void (^AlertCallBack)(UIAlertView *alertView,NSInteger buttonIndex);
+@interface UIAlertView (WZ)<UIAlertViewDelegate>
+
+/**
+ *  点击回调
+ */
+@property(nonatomic,copy)AlertCallBack alertCallBack;
+/**
+ *  显示提示框
+ *
+ *  @param callback 点击回调
+ */
+-(void)WZ_ShowWithCallBack:(AlertCallBack )callback;
+@end
+
 
 @interface NSString ()
 
@@ -32,7 +50,7 @@
             if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.2) {
                 //在10.2以下是不会弹出提示框的
                 UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:[self stringByReplacingOccurrencesOfString:@"tel:" withString:@""] delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"呼叫", nil];
-                [alertV XH_ShowWithCallBack:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                [alertV WZ_ShowWithCallBack:^(UIAlertView *alertView, NSInteger buttonIndex) {
                     if (buttonIndex == 0) {
                         if (block) {
                             block(NO);
@@ -70,12 +88,8 @@
             }
         }];
     }else{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
         BOOL result =[[UIApplication sharedApplication] openURL:phoneUrl];
-#pragma clang diagnostic pop
-        
-        
         if (self.makeCallBlock) {
             self.makeCallBlock(result);
         }
@@ -146,3 +160,31 @@
 }
 
 @end
+
+@implementation UIAlertView (WZ)
+/**
+ *  显示提示框
+ *
+ *  @param callback 点击回调
+ */
+-(void)WZ_ShowWithCallBack:(AlertCallBack )callback{
+    self.alertCallBack=callback;
+    self.delegate=self;
+    [self show];
+}
+-(AlertCallBack)alertCallBack{
+    return   objc_getAssociatedObject(self, @selector(alertCallBack));
+}
+-(void)setAlertCallBack:(AlertCallBack)alertCallBack{
+    objc_setAssociatedObject(self, @selector(alertCallBack), alertCallBack, OBJC_ASSOCIATION_COPY);
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (self.alertCallBack) {
+        __weak typeof(self) weakSelf = self;
+        self.alertCallBack(weakSelf,buttonIndex);
+    }
+}
+@end
+
+#pragma clang diagnostic pop
