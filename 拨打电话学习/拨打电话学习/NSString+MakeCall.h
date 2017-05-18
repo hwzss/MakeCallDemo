@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-typedef void(^WZ_MakeCallBlock)(BOOL success);
+typedef void (^WZ_MakeCallBlock)(BOOL success);
 
 @interface NSString (MakeCall)
 
@@ -18,17 +18,17 @@ typedef void(^WZ_MakeCallBlock)(BOOL success);
 
  @param block 回调，拨打了电话返回YES，否则NO
  */
--(void)WZ_makeCall:(WZ_MakeCallBlock )block;
+- (void)WZ_makeCall:(WZ_MakeCallBlock)block;
 @end
 
-@interface NSString (MakeCallByWeb)<UIWebViewDelegate>
-@property (strong,nonatomic)UIWebView *cacheWebV;
-@property (assign,nonatomic)BOOL didBecomeActive;
+@interface NSString (MakeCallByWeb) <UIWebViewDelegate>
+@property (strong, nonatomic) UIWebView *cacheWebV;
+@property (assign, nonatomic) BOOL didBecomeActive;
 
--(void)WZ_makeCallUseWebView:(WZ_MakeCallBlock )block;
+- (void)WZ_makeCallUseWebView:(WZ_MakeCallBlock)block;
 @end
 
 @interface NSString (MakeCallByOpenUrl)
 
--(void)WZ_makeCallUseOpenUrl:(WZ_MakeCallBlock)callBlock;
+- (void)WZ_makeCallUseOpenUrl:(WZ_MakeCallBlock)callBlock;
 @end
