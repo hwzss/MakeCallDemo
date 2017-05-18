@@ -176,6 +176,7 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
 
             self.cacheWebV = nil;
             self.makeCallBlock = nil;
+            self.didBecomeActive = NO;
         }
     }
 }
