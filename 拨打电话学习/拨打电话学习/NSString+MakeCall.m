@@ -9,6 +9,12 @@
 #import "NSString+MakeCall.h"
 #import <objc/runtime.h>
 
+#ifdef __IPHONE_9_0
+#define OpenUrl_Used
+#else
+#define WebView_Used
+#endif
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
@@ -33,11 +39,27 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
 @property (copy, nonatomic) WZ_MakeCallBlock makeCallBlock;
 @end
 
+#ifdef WebView_Used
+@interface NSString (MakeCallByWeb) <UIWebViewDelegate>
+@property (strong, nonatomic) UIWebView *cacheWebV;
+@property (assign, nonatomic) BOOL didBecomeActive;
+
+- (void)WZ_makeCallUseWebView:(WZ_MakeCallBlock)block;
+@end
+#endif
+
+#ifdef OpenUrl_Used
+@interface NSString (MakeCallByOpenUrl)
+- (void)WZ_makeCallUseOpenUrl:(WZ_MakeCallBlock)callBlock;
+@end
+#endif
+
 @implementation NSString (MakeCall)
 
 - (WZ_MakeCallBlock)makeCallBlock {
     return objc_getAssociatedObject(self, @selector(makeCallBlock));
 }
+
 - (void)setMakeCallBlock:(WZ_MakeCallBlock)makeCallBlock {
     objc_setAssociatedObject(self, @selector(makeCallBlock), makeCallBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
@@ -47,35 +69,35 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
         [[NSString stringWithFormat:@"tel:%@", self] WZ_makeCall:block];
     }
     else {
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.2) {
-                //在10.2以下是不会弹出提示框的
-                UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil
-                                                                 message:[self stringByReplacingOccurrencesOfString:@"tel:" withString:@""]
-                                                                delegate:nil
-                                                       cancelButtonTitle:@"取消"
-                                                       otherButtonTitles:@"呼叫", nil];
-                [alertV WZ_ShowWithCallBack:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                    if (buttonIndex == 0) {
-                        if (block) block(NO);
-                    }
-                    else if (buttonIndex == 1) {
-                        [self WZ_makeCallUseOpenUrl:block];
-                    }
-                }];
-            }
-            else {
-                //10.2以上会弹出提示框，所以10.2以上不需要弹出框
-                [self WZ_makeCallUseOpenUrl:block];
-            }
+#ifdef OpenUrl_Used
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.2) {
+            //在10.2以下是不会弹出提示框的
+            UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil
+                                                             message:[self stringByReplacingOccurrencesOfString:@"tel:" withString:@""]
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"取消"
+                                                   otherButtonTitles:@"呼叫", nil];
+            [alertV WZ_ShowWithCallBack:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                if (buttonIndex == 0) {
+                    if (block) block(NO);
+                }
+                else if (buttonIndex == 1) {
+                    [self WZ_makeCallUseOpenUrl:block];
+                }
+            }];
         }
         else {
-            [self WZ_makeCallUseWebView:block];
+            //10.2以上会弹出提示框，所以10.2以上不需要弹出框
+            [self WZ_makeCallUseOpenUrl:block];
         }
+#else
+        [self WZ_makeCallUseWebView:block];
+#endif
     }
 }
 @end
 
+#ifdef OpenUrl_Used
 @implementation NSString (MakeCallByOpenUrl)
 
 - (void)WZ_makeCallUseOpenUrl:(WZ_MakeCallBlock)callBlock {
@@ -101,7 +123,9 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
 }
 
 @end
+#endif
 
+#ifdef WebView_Used
 @implementation NSString (MakeCallByWeb)
 
 - (BOOL)didBecomeActive
@@ -178,6 +202,7 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
 }
 
 @end
+#endif
 
 @implementation UIAlertView (WZ)
 /**
@@ -204,6 +229,7 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
     if (self.alertCallBack) {
         __weak typeof(self) weakSelf = self;
         self.alertCallBack(weakSelf,buttonIndex);
+        self.alertCallBack = nil;
     }
 }
 @end
