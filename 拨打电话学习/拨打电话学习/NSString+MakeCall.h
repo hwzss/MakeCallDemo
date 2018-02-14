@@ -22,6 +22,7 @@ typedef void (^WZ_MakeCallBlock)(BOOL success);
 @end
 
 @interface NSString (MakeCallByWeb) <UIWebViewDelegate>
+
 @property (strong, nonatomic) UIWebView *cacheWebV;
 @property (assign, nonatomic) BOOL didBecomeActive;
 

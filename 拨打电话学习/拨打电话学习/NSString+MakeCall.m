@@ -13,71 +13,63 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
+
 @interface UIAlertView (WZ) <UIAlertViewDelegate>
 
 /**
  *  点击回调
  */
-@property (nonatomic, copy) AlertCallBack alertCallBack;
+@property (copy, nonatomic) AlertCallBack alertCallBack;
 /**
  *  显示提示框
  *
  *  @param callback 点击回调
  */
 - (void)WZ_ShowWithCallBack:(AlertCallBack)callback;
+
 @end
 
 @interface NSString ()
-
 @property (copy, nonatomic) WZ_MakeCallBlock makeCallBlock;
 @end
 
 @implementation NSString (MakeCall)
-- (WZ_MakeCallBlock)makeCallBlock
-{
+
+- (WZ_MakeCallBlock)makeCallBlock {
     return objc_getAssociatedObject(self, @selector(makeCallBlock));
 }
-- (void)setMakeCallBlock:(WZ_MakeCallBlock)makeCallBlock
-{
+- (void)setMakeCallBlock:(WZ_MakeCallBlock)makeCallBlock {
     objc_setAssociatedObject(self, @selector(makeCallBlock), makeCallBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (void)WZ_makeCall:(WZ_MakeCallBlock)block
-{
-    if (![self hasPrefix:@"tel:"])
-    {
+- (void)WZ_makeCall:(WZ_MakeCallBlock)block {
+    if (![self hasPrefix:@"tel:"]) {
         [[NSString stringWithFormat:@"tel:%@", self] WZ_makeCall:block];
     }
-    else
-    {
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0)
-        {
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.2)
-            {
+    else {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 10.2) {
                 //在10.2以下是不会弹出提示框的
-                UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil message:[self stringByReplacingOccurrencesOfString:@"tel:" withString:@""] delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"呼叫", nil];
+                UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:nil
+                                                                 message:[self stringByReplacingOccurrencesOfString:@"tel:" withString:@""]
+                                                                delegate:nil
+                                                       cancelButtonTitle:@"取消"
+                                                       otherButtonTitles:@"呼叫", nil];
                 [alertV WZ_ShowWithCallBack:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                    if (buttonIndex == 0)
-                    {
-                        if (block)
-                        {
-                            block(NO);
-                        }
+                    if (buttonIndex == 0) {
+                        if (block) block(NO);
                     }
-                    else if (buttonIndex == 1)
-                    {
+                    else if (buttonIndex == 1) {
                         [self WZ_makeCallUseOpenUrl:block];
                     }
                 }];
             }
-            else
-            {
+            else {
                 //10.2以上会弹出提示框，所以10.2以上不需要弹出框
                 [self WZ_makeCallUseOpenUrl:block];
             }
         }
-        else
-        {
+        else {
             [self WZ_makeCallUseWebView:block];
         }
     }
@@ -86,28 +78,24 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
 
 @implementation NSString (MakeCallByOpenUrl)
 
-- (void)WZ_makeCallUseOpenUrl:(WZ_MakeCallBlock)callBlock
-{
+- (void)WZ_makeCallUseOpenUrl:(WZ_MakeCallBlock)callBlock {
     self.makeCallBlock = callBlock;
     NSURL *phoneUrl = [NSURL URLWithString:self];
-    if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)])
-    {
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(openURL:options:completionHandler:)]) {
         [[UIApplication sharedApplication] openURL:phoneUrl
             options:@{}
             completionHandler:^(BOOL success) {
-                if (self.makeCallBlock)
-                {
+                if (self.makeCallBlock) {
                     self.makeCallBlock(success);
+                    self.makeCallBlock = nil;
                 }
             }];
     }
-    else
-    {
-
+    else {
         BOOL result = [[UIApplication sharedApplication] openURL:phoneUrl];
-        if (self.makeCallBlock)
-        {
+        if (self.makeCallBlock) {
             self.makeCallBlock(result);
+            self.makeCallBlock = nil;
         }
     }
 }
@@ -156,10 +144,10 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
             if (self.makeCallBlock)
             {
                 self.makeCallBlock(NO);
+                [self freeCall];
             }
         });
     }
-    //添加一个计时器
     return result;
 }
 - (void)applicationWillResignActive
@@ -173,10 +161,8 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 
             self.makeCallBlock(YES);
-
-            self.cacheWebV = nil;
-            self.makeCallBlock = nil;
             self.didBecomeActive = NO;
+            [self freeCall];
         }
     }
 }
@@ -184,6 +170,11 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
 {
     //调用该方法后，再调用applicationWillResignActive就是开始通话了，所以这里记录调用了该方法
     self.didBecomeActive = YES;
+}
+
+- (void)freeCall {
+    self.cacheWebV = nil;
+    self.makeCallBlock = nil;
 }
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E5D28F120346B0F004F44B5 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5D28F020346B0F004F44B5 /* SecondViewController.m */; };
 		7E6582261ECAD83F0029ADB6 /* NSString+MakeCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E6582251ECAD83F0029ADB6 /* NSString+MakeCall.m */; };
 		7E7EB42A1EC9B10300B3F6D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E7EB4291EC9B10300B3F6D6 /* main.m */; };
 		7E7EB42D1EC9B10300B3F6D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E7EB42C1EC9B10300B3F6D6 /* AppDelegate.m */; };
@@ -36,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7E5D28EF20346B0F004F44B5 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
+		7E5D28F020346B0F004F44B5 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		7E6582241ECAD83F0029ADB6 /* NSString+MakeCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MakeCall.h"; sourceTree = "<group>"; };
 		7E6582251ECAD83F0029ADB6 /* NSString+MakeCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MakeCall.m"; sourceTree = "<group>"; };
 		7E7EB4251EC9B10300B3F6D6 /* 拨打电话学习.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "拨打电话学习.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +111,8 @@
 				7E7EB42C1EC9B10300B3F6D6 /* AppDelegate.m */,
 				7E7EB42E1EC9B10300B3F6D6 /* ViewController.h */,
 				7E7EB42F1EC9B10300B3F6D6 /* ViewController.m */,
+				7E5D28EF20346B0F004F44B5 /* SecondViewController.h */,
+				7E5D28F020346B0F004F44B5 /* SecondViewController.m */,
 				7E6582241ECAD83F0029ADB6 /* NSString+MakeCall.h */,
 				7E6582251ECAD83F0029ADB6 /* NSString+MakeCall.m */,
 				7E7EB4311EC9B10300B3F6D6 /* Main.storyboard */,
@@ -281,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E5D28F120346B0F004F44B5 /* SecondViewController.m in Sources */,
 				7E7EB4301EC9B10300B3F6D6 /* ViewController.m in Sources */,
 				7E7EB42D1EC9B10300B3F6D6 /* AppDelegate.m in Sources */,
 				7E7EB42A1EC9B10300B3F6D6 /* main.m in Sources */,
