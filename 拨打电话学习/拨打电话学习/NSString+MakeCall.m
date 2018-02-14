@@ -128,45 +128,37 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
 #ifdef WebView_Used
 @implementation NSString (MakeCallByWeb)
 
-- (BOOL)didBecomeActive
-{
+- (BOOL)didBecomeActive {
     return [objc_getAssociatedObject(self, @selector(didBecomeActive)) boolValue];
 }
-- (void)setDidBecomeActive:(BOOL)didBecomeActive
-{
+- (void)setDidBecomeActive:(BOOL)didBecomeActive {
     objc_setAssociatedObject(self, @selector(didBecomeActive), [NSNumber numberWithBool:didBecomeActive], OBJC_ASSOCIATION_ASSIGN);
 }
-- (UIWebView *)cacheWebV
-{
+- (UIWebView *)cacheWebV {
     return objc_getAssociatedObject(self, @selector(cacheWebV));
 }
-- (void)setCacheWebV:(UIWebView *)cacheWebV
-{
+- (void)setCacheWebV:(UIWebView *)cacheWebV {
     objc_setAssociatedObject(self, @selector(cacheWebV), cacheWebV, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)WZ_makeCallUseWebView:(WZ_MakeCallBlock)block
-{
+- (void)WZ_makeCallUseWebView:(WZ_MakeCallBlock)block {
     self.makeCallBlock = block;
     self.cacheWebV = [[UIWebView alloc] init];
     self.cacheWebV.delegate = self;
     NSURLRequest *phoneRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:self]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 
     [self.cacheWebV loadRequest:phoneRequest];
 }
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     BOOL result = NO;
-    if ([request.URL.absoluteString hasPrefix:@"tel:"])
-    {
+    if ([request.URL.absoluteString hasPrefix:@"tel:"]) {
         //电话呼叫
         result = YES;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             //8秒后还没有开始通话，假设为点击取消按钮了，所以为失败
-            if (self.makeCallBlock)
-            {
+            if (self.makeCallBlock) {
                 self.makeCallBlock(NO);
                 [self freeCall];
             }
@@ -174,12 +166,9 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
     }
     return result;
 }
-- (void)applicationWillResignActive
-{
-    if (self.didBecomeActive)
-    {
-        if (self.makeCallBlock)
-        {
+- (void)_applicationWillResignActive {
+    if (self.didBecomeActive) {
+        if (self.makeCallBlock) {
             //移除通知以及webView，执行回调
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -190,8 +179,7 @@ typedef void (^AlertCallBack)(UIAlertView *alertView, NSInteger buttonIndex);
         }
     }
 }
-- (void)applicationDidBecomeActive
-{
+- (void)_applicationDidBecomeActive {
     //调用该方法后，再调用applicationWillResignActive就是开始通话了，所以这里记录调用了该方法
     self.didBecomeActive = YES;
 }
